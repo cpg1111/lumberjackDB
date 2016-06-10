@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+message Collection {
+    required string Name = 1;
+    required bool Capped = 2;
+    optional int64 MaxByteSize = 3;
+}

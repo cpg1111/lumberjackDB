@@ -1,3 +1,3 @@
 package storage
 
-type Cursor struct{}
+type Cursor []Records

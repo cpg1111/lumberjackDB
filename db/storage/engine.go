@@ -1,8 +1,7 @@
 package storage
 
-//#include "tree.h"
 import (
-	"C"
+	"github.com/google/btree"
 )
 
 // Engine is the storage engine
@@ -13,12 +12,14 @@ type Engine struct {
 // NewEngine returns a new Engine instance or an error
 func NewEngine() (*Engine, error) {
 	return &Engine{
-		collectionTrees: make(map[string]C.Tree),
+		collectionTrees: make(map[string]*btree.Btree),
 	}, nil
 }
 
-func newTree(data interface{}) C.Tree {
-	tree := C.newTree()
-	C.insert(tree, &data)
-	return tree
+func (e *Engine) newTree(collection string, data interface{}) {
+	e.collectionTrees[collection] = btree.New(2)
+	if data != nil {
+		rec := NewRecord(data)
+		e.collectionTrees[collection].ReplaceOrInsert(rec)
+	}
 }

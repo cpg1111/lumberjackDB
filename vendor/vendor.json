@@ -6,6 +6,18 @@
 			"checksumSHA1": "zb7w9zrHw5g5IFXHe6zX2eD7q2Q=",
 			"path": "github.com/golang/protobuf/proto",
 			"revision": "8616e8ee5e20a1704615e6c8d7afcdac06087a67"
+		},
+		{
+			"checksumSHA1": "oFtfkd/I6Th2eO1MRPkJC5E1qFc=",
+			"path": "github.com/google/btree",
+			"revision": "7364763242911ab6d418d2722e237194938ebad0",
+			"revisionTime": "2016-09-23T17:12:10Z"
+		},
+		{
+			"checksumSHA1": "Hc7LMQrHR71kkSsd/P/SBdiC258=",
+			"path": "github.com/petar/GoLLRB/llrb",
+			"revision": "53be0d36a84c2a886ca057d34b6aa4468df9ccb4",
+			"revisionTime": "2013-04-27T21:51:48Z"
 		}
 	],
 	"rootPath": "github.com/cpg1111/lumberjackDB"

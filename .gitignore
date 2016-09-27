@@ -30,6 +30,10 @@ _testmain.go
 # Godeps
 **/Godeps/_workspace
 
+# Vendors
+vendor/*
+!vendor/vendor.json
+
 #####
 # C #
 #####

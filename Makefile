@@ -12,6 +12,7 @@ build-lumberjackd:
 	cp -r ./cmd/lumberjackd/ ./build/
 	cp -r ./lumberjackd/src/ ./build/
 	mkdir ./dist/
+	g++ -std=c++14 -pthread -c ./build/vectored.cpp -o vectored.o
 	g++ -std=c++14 -pthread -o ./dist/lumberjackd ./build/main.cpp
 	rm -rf ./build/
 
@@ -39,6 +40,14 @@ get-deps-lumberjackd:
 	./configure && \
 	make && \
 	make check && \
+	make install
+	curl -L -o /tmp/wiredtiger.tar.gz https://github.com/wiredtiger/wiredtiger/archive/2.9.1.tar.gz && \
+	cd /tmp/ && \
+	tar xzvf wiredtiger.tar.gz
+	cd wiredtiger-2.9.1/ && \
+	sh autogen.sh && \
+	./configure && \
+	make && \
 	make install
 
 get-deps-timberd:

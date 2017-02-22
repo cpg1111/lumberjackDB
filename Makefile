@@ -43,7 +43,7 @@ get-deps-lumberjackd:
 	make install
 	curl -L -o /tmp/wiredtiger.tar.gz https://github.com/wiredtiger/wiredtiger/archive/2.9.1.tar.gz && \
 	cd /tmp/ && \
-	tar xzvf wiredtiger.tar.gz
+	tar xzvf wiredtiger.tar.gz && \
 	cd wiredtiger-2.9.1/ && \
 	sh autogen.sh && \
 	./configure && \

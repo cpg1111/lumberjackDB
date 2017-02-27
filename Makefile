@@ -31,7 +31,9 @@ get-deps: get-deps-lumberjackd get-deps-timberd
 get-deps-lumberjackd: get-deps-lumberjackd-build-deps get-deps-lumberjackd-libuv get-deps-lumberjackd-wt get-deps-lumberjackd-bson get-deps-lumberjackd-raft
 
 get-deps-lumberjackd-build-deps:
-	${PKG_MGR} install -y automake libtool cmake libmongoc-1.0-0
+	${PKG_MGR} install -y software-properties-common
+	add-apt-repository 'deb http://ftp.de.debian.org/debian sid main'
+	${PKG_MGR} install -y automake libtool cmake libmongoc-dev unzip libmongo-client-dev libboost-dev rsync xxd libsasl2-dev
 
 get-deps-lumberjackd-libuv:
 	gpg --keyserver pool.sks-keyservers.net --recv-keys AE9BC059
@@ -72,22 +74,26 @@ get-deps-lumberjackd-bson:
 	make install && \
 	cd / && \
 	rm -rf /tmp/libbson.tar.gz /tmp/libbson-1.6.0/ && \
-	curl -L -o /tmp/bson.tar.gz https://github.com/mongodb/mongo-cxx-driver/archive/r3.1.1.tar.gz && \
+	curl -L -o /tmp/bson.tar.gz https://github.com/mongodb/mongo-cxx-driver/archive/r3.0.0.tar.gz && \
 	cd /tmp && \
 	tar xzvf bson.tar.gz && \
-	cd mongo-cxx-driver-r3.1.1/build && \
+	cd mongo-cxx-driver-r3.0.0/build && \
 	cmake -DCMAKE_BUILD_TYPE=Release -DBSONCXX_POLY_USE_BOOST=1 \
-	    -DCMAKE_INSTALL_PREFIX=/usr/local ..
+	    -DCMAKE_INSTALL_PREFIX=/usr/local .. && \
+	cd / && \
+	rm -rf /tmp/bson.tar.gz /tmp/mongo-cxx-driver-r3.0.0/
 
 get-deps-lumberjackd-raft:
-	curl -L -o /tmp/kudu.tar.gz https://github.com/apache/kudu/archive/1.2.0.tar.gz && \
-	cd /tmp && \
-	tar xzvf kudu.tar.gz && \
-	cd kudu-1.2.0/ && \
-	mkdir -p build/debug && \
-	cd build/debug && \
-	cmake ../.. && \
-	make -j8
+	curl -L -o /tmp/raft.tar.gz https://github.com/willemt/raft/archive/v0.5.0.tar.gz && \
+	cd /tmp/ && \
+	tar xzvf raft.tar.gz && \
+	cd raft-0.5.0 && \
+	make && \
+	cp libcraft.a /usr/local/lib/ && \
+	cp libcraft.so /usr/local/lib/ && \
+	cp -r include/ /usr/local/include/ && \
+	cd / && \
+	rm -rf /tmp/raft.tar.gz /tmp/raft-0.5.0/
 
 get-deps-timberd:
 	if [ -z `which glide` ]; then \

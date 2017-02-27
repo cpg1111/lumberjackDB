@@ -81,3 +81,6 @@ vendor/*
 /deps
 erl_crash.dump
 *.ez
+
+# vim
+*.swp

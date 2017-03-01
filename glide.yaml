@@ -1,0 +1,4 @@
+package: github.com/cpg1111/lumberjackDB
+import:
+- package: github.com/bolt/bolt
+  version: 3.2.7

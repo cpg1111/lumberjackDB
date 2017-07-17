@@ -22,6 +22,13 @@ namespace net {
         this->port = port;
     }
 
+    void TCPNet::_unblock(int fd) {
+        int flags = fcntl(fd, F_GETFL, 0)
+        if (flags == -1) throw "fcntl failed";
+        flags |= O_NONBLOCK;
+        if (fcntl(fd, F_SETFL, flags) == -1) throw "fcntl failed"; 
+    }
+
     void TCPNet::serve() {
         this->should_run = true;
         struct sockaddr_in addr;
@@ -38,10 +45,7 @@ namespace net {
         }
         addr.sin_port = htons((uint32_t)port);
         if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) throw _UNABLE_TO_BIND_ADDR_EXCEPTION;
-        int flags = fcntl(sock, F_GETFL, 0)
-        if (flags == -1) throw "fcntl failed";
-        flags |= O_NONBLOCK;
-        if (fcntl(sock, F_SETFL, flags) == -1) throw "fcntl failed";
+        this->_unblock(sock);
         if (listen(sock, SOMAXCONN) != 0) throw _UNABLE_TO_LISTEN_EXCEPTION;
         int evfd = epoll_create1(0);
         if (evfd == -1) {
@@ -67,9 +71,30 @@ namespace net {
                         if (infd == -1) {
                             // TODO handle error
                         }
+                        int success = getnameinfo(&in_addr, in_len, hbuf, sizeof(hbuf), sbuf, sizeof(sbuf), NI_NUMERICHOST, NI_NUMERICSERV);
+                        if (success == 0) {
+                            // TODO display success
+                        }
+                        this->unblock(infd);
+                        continue;
+                    }
+                } else {
+                    int done = 0;
+                    for (;;) {
+                        ssize_t count;
+                        char buf[512];
+                        count = read (events[i].data.fd, buf, sizeof buf);
+                        if (count < 0) {
+                            //TODO handle error
+                        }
+                        if (done == 1) {
+                            close(events[i].data.fd);
+                        }
                     }
                 }
             }
         }
+        free(events);
+        close(sfd);
     }
 }

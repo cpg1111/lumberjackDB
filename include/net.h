@@ -28,6 +28,7 @@ namespace net {
             void publish();
 
         private:
+            void _unblock(int fd);
             std::vector<TCPConn> subscribers;
             std::vector<TCPConn> open_connections;
             disk::Writer *writer;
